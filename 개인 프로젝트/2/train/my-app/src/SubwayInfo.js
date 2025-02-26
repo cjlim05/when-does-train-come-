@@ -12,6 +12,7 @@ const SubwayInfo = () => {
   const [error, setError] = useState("");
   const [excelData, setExcelData] = useState([]); // 엑셀 데이터를 저장
 
+
   useEffect(() => {
     const fetchExcelData = async () => {
       try {
@@ -25,7 +26,7 @@ const SubwayInfo = () => {
         setExcelData(jsonData);
 
         // 역 이름 목록 만들기 (중복 제거)
-        const stationOptions = Array.from(new Set(jsonData.map(row => row["statnNm"])))
+        const stationOptions = Array.from(new Set(jsonData.map(row => row["statnNm"].trim().toLowerCase())))
           .map(station => ({ value: station, label: station }));
 
         setStations(stationOptions);
@@ -44,7 +45,7 @@ const SubwayInfo = () => {
 
     // 선택한 역에 해당하는 노선(LineNm) 목록 필터링
     const filteredLines = Array.from(new Set(excelData
-      .filter(row => row["statnNm"] === selectedOption.value)
+      .filter(row => row["statnNm"].trim().toLowerCase() === selectedOption.value)
       .map(row => row["lineNm"]))) // 'LineNm'으로 노선 선택
       .map(line => ({ value: line, label: line }));
 
@@ -57,38 +58,49 @@ const SubwayInfo = () => {
       setError("역 이름을 선택하세요.");
       return;
     }
-
+  
     if (!selectedLine) {
       setError("노선을 선택하세요.");
       return;
     }
-
+  
     try {
-      // 엑셀 데이터에서 selectedStation과 selectedLine에 맞는 updnLine 값 찾기
-      const selectedRow = excelData.find(row => row["statnNm"] === selectedStation.value && row["LineNm"] === selectedLine.value);
-
+      const selectedRow = excelData.find(row => 
+        row["statnNm"].trim().toLowerCase() === selectedStation.value && 
+        row["lineNm"] === selectedLine.value
+      );
+  
       if (!selectedRow) {
         setError("해당하는 데이터를 찾을 수 없습니다.");
         return;
       }
+  
 
-      const updnLine = selectedRow["updnLine"]; // 해당 역과 노선에 맞는 updnLine 값
-
-      // 역 이름과 updnLine, LineNm을 API에 전달
+      // 🛠 요청 URL과 파라미터를 로그로 확인
+      console.log("Sending request to backend with:", {
+        station: selectedStation.value,
+        line: selectedLine.value,
+      });
+  
       const response = await axios.get("http://localhost:8080/subway", {
         params: {
-          station: selectedStation.value, // 선택한 역 이름 (statnNm)
-          updnLine: updnLine, // 선택된 방향에 해당하는 updnLine 값
-          line: selectedLine.value // 선택한 노선 (LineNm)
+          station: selectedStation.value,
+          line: selectedLine.value
         },
       });
+  
+      // 🛠 응답 데이터 확인
+      console.log("Received response from backend:", response.data);
+  
       setData(response.data.trains);
       setError("");
     } catch (err) {
+      console.error("Error fetching subway data:", err);
       setError("데이터를 불러올 수 없습니다.");
       setData(null);
     }
   };
+  
 
   return (
     <div>
