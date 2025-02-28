@@ -1,0 +1,54 @@
+/* SubwayInfo.css */
+.train-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+  }
+  
+  .train-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+  }
+  
+  .train-section {
+    flex: 1;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .up-line {
+    background-color: #d1e7ff;
+    border-left: 5px solid #0d6efd;
+  }
+  
+  .down-line {
+    background-color: #ffd1d1;
+    border-left: 5px solid #dc3545;
+  }
+  
+  .train-item {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .train-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* 반응형 - 모바일에서는 세로 정렬 */
+  @media (max-width: 600px) {
+    .train-container {
+      flex-direction: column;
+    }
+  }
+  
