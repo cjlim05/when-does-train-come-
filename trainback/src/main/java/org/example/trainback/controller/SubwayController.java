@@ -37,7 +37,8 @@ public class SubwayController {
             Map.entry("경의중앙선", "1063"),
             Map.entry("공항철도", "1065"),
             Map.entry("신분당선", "1071"),
-            Map.entry("수인분당선", "1075")
+            Map.entry("수인분당선", "1075"),
+            Map.entry("GTX-A", "1032")
     );
 
     @GetMapping
@@ -60,14 +61,13 @@ public class SubwayController {
 
         System.out.println("🔵 Request URL: " + url);
         System.out.println("🟢 Requested Station: " + station);
-        System.out.println("🟢 Requested Line: " + line + " (SubwayId: " + requestedSubwayId + ")");
 
         try {
             ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
 
             // ✅ API 응답 로그 추가
             System.out.println("🟡 API Response Status: " + response.getStatusCode());
-            System.out.println("🟡 API Response Body: " + response.getBody());
+
 
             if (response.getBody() == null || response.getBody().get("realtimeArrivalList") == null) {
                 return ResponseEntity.ok(Map.of("station", station, "trains", List.of()));
