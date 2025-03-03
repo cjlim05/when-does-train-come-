@@ -67,7 +67,7 @@ const SubwayInfo = () => {
       const response = await axios.get("http://localhost:8080/subway", {
         params: {
           station: selectedStation.value,
-          line: selectedLine.value
+          line: selectedLine.value//fjf
         },
       });
       setData(response.data.trains);
