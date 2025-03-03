@@ -84,9 +84,10 @@ const SubwayInfo = () => {
     return match ? match[1] : null;
   };
 
-  const getPreviousStations = (currentStation, direction) => {
+  const getPreviousStations = (currentStation, direction, line) => {
     // 현재 방향(상행 or 하행)에 맞는 데이터만 필터링
-    const filteredExcelData = excelData.filter(row => row.updnLine === direction);
+    const filteredExcelData = excelData.filter(row => row.updnLine === direction && row.lineNm === line);
+    console.log(line)
 
     const prevStation = filteredExcelData.find(row => row.statnNm === currentStation)?.statnFid;
     console.log("정거장 이름: " +prevStation)
@@ -104,7 +105,7 @@ const SubwayInfo = () => {
     if (filteredTrains.length === 0) return null;
   
     const firstTrain = filteredTrains[0]; // 첫 번째 열차 기준
-    const { prevStationName, prevPrevStationName } = getPreviousStations(firstTrain.statnNm, direction);
+    const { prevStationName, prevPrevStationName } = getPreviousStations(firstTrain.statnNm, direction, selectedLine.value);
   
     return (
       <>
