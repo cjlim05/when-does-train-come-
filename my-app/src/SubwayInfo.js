@@ -86,13 +86,8 @@ const SubwayInfo = () => {
 
   const getPreviousStations = (currentStation, direction, line) => {
     // 현재 방향(상행 or 하행)에 맞는 데이터만 필터링
-<<<<<<< HEAD
     const filteredExcelData = excelData.filter(row => row.updnLine === direction && row.LINE_NUM === line);
     console.log("호선: "+ line)
-=======
-    const filteredExcelData = excelData.filter(row => row.updnLine === direction && row.lineNm === line);
-    console.log(line)
->>>>>>> f48e761 (fix errors for station names)
 
     // 전역
     const prevStation = filteredExcelData.find(row => row.STATION_NM === currentStation)?.statnFid;
